@@ -1,0 +1,186 @@
+---
+
+layout: page
+title: Quantum Algorithm for Finding All Eigenvalues of a Sparse Hermitian Matrix
+description: Developed a full-spectrum quantum estimation scheme without prior eigenvector preparation using computational-basis sampling and sine-windowed QPE. A later re-analysis revealed spectral resolution as a key bottleneck, shaping my current focus on quantum advantage under realistic resource constraints.
+importance: 1
+category: research
+related_publications: false
+---------------------------
+
+**M.S. Thesis Research**
+
+## Overview
+
+My master's research investigated whether a quantum computer could estimate the **full spectrum of a large sparse Hermitian matrix without prior knowledge of its eigenvectors**.
+
+Standard quantum phase estimation (QPE) can efficiently estimate an eigenvalue when a corresponding eigenstate is available. For full-spectrum reconstruction, however, those eigenvectors are generally unknown in advance. My approach was therefore to replace eigenstate preparation with easily preparable computational-basis states and recover the spectrum through repeated probabilistic sampling.
+
+The project combined **Hamiltonian simulation, quantum phase estimation, computational-basis sampling, and window-function design**.
+
+---
+
+## Problem
+
+Given an \(N \times N\) sparse Hermitian matrix \(H\), the goal is to estimate all of its eigenvalues
+
+$$
+\{\lambda_1,\lambda_2,\ldots,\lambda_N\},
+$$
+
+without assuming prior access to the corresponding eigenvectors.
+
+A key difficulty is that conventional QPE starts from a state with nonzero overlap with the desired eigenstate. If the eigenvectors themselves are unknown, preparing such states for every eigenvalue becomes problematic.
+
+This led to the central question of my thesis:
+
+> **Can the entire spectrum of a sparse Hermitian matrix be reconstructed without explicitly preparing its eigenvectors?**
+
+---
+
+## Approach
+
+Let
+
+$$
+H = \sum_{j=1}^{N} \lambda_j |u_j\rangle\langle u_j|
+$$
+
+be the spectral decomposition of the Hermitian matrix.
+
+Instead of preparing an eigenstate \(|u_j\rangle\), I used computational-basis states \(|b\rangle\) as inputs:
+
+$$
+|b\rangle = \sum_{j=1}^{N} \alpha_{bj}|u_j\rangle.
+$$
+
+Applying Hamiltonian evolution and QPE then produces eigenvalue estimates according to the overlap probabilities
+
+$$
+|\alpha_{bj}|^2.
+$$
+
+Because the computational basis and the eigenbasis are both orthonormal bases, averaging over computational-basis inputs distributes the total sampling weight across the complete set of eigenvectors.
+
+Repeated measurements can therefore recover different eigenvalues without explicitly constructing their eigenstates. Full-spectrum reconstruction can be interpreted as a sampling process analogous to the **coupon collector problem**.
+
+---
+
+## Sine-Windowed Quantum Phase Estimation
+
+A second part of the project focused on improving the stability of phase estimation.
+
+Standard QPE uses a uniform superposition over the phase-estimation register. I instead investigated a **sine-windowed initial state**, assigning amplitudes according to a sinusoidal window before Hamiltonian evolution.
+
+The motivation was to suppress spectral leakage away from the true eigenvalue. Compared with the conventional rectangular window, the sine window produces substantially faster decay of off-target probability.
+
+In the asymptotic error regime, the leakage probability improves from approximately
+
+$$
+O\!\left(\frac{1}{\delta^2}\right)
+$$
+
+to
+
+$$
+O\!\left(\frac{1}{\delta^4}\right),
+$$
+
+where \(\delta\) denotes the distance from the target phase.
+
+In a noiseless LiH simulation, sine-windowed QPE increased the probability of estimating the ground-state energy within chemical accuracy from **82% to 97%**.
+
+---
+
+## Initial Complexity Analysis
+
+Under sparse-matrix oracle assumptions, I analyzed the cost of combining Hamiltonian simulation with the number of measurements required to observe the complete spectrum.
+
+The resulting initial runtime estimate was
+
+$$
+\tilde{O}\!\left(Ns^2(\log N)^2\right),
+$$
+
+where \(N\) is the matrix dimension and \(s\) denotes matrix sparsity.
+
+This analysis suggested that quantum spectrum reconstruction could substantially reduce the computational cost relative to conventional full diagonalization.
+
+However, this complexity estimate did not fully account for the physical cost required to **resolve increasingly dense eigenvalues**.
+
+---
+
+## Critical Re-evaluation: The Spectral-Resolution Bottleneck
+
+I later revisited the algorithm from the perspective of finite spectral resolution.
+
+If \(N\) eigenvalues occupy a bounded spectral interval, neighboring eigenvalues can become separated by gaps
+
+$$
+\Delta_{\min}=O\!\left(\frac{1}{\mathrm{poly}(N)}\right)
+$$
+
+or smaller.
+
+To distinguish two eigenvalues separated by \(\Delta_{\min}\), phase estimation requires precision
+
+$$
+\epsilon < \Delta_{\min}.
+$$
+
+The evolution time or query complexity required to achieve phase precision \(\epsilon\) scales at least inversely with that precision,
+
+$$
+T = O\!\left(\frac{1}{\epsilon}\right).
+$$
+
+As a result, the dominant cost can shift from the **number of samples** required to collect the eigenvalues to the **resolution required for each individual sample**.
+
+This observation showed that an oracle-level runtime analysis alone can substantially underestimate the physical resources required for full-spectrum reconstruction.
+
+---
+
+## Can Spectral Filtering Avoid This Bottleneck?
+
+I also examined whether more sophisticated spectral transformations could circumvent the resolution problem.
+
+One possibility is to construct a narrow spectral filter using polynomial methods such as QSVT. However, isolating spectral features separated by a small gap \(\Delta\) requires increasingly high polynomial degree as the target transition becomes sharper.
+
+Similarly, artificially stretching nearby eigenvalues requires a transformation with a rapidly varying slope within a narrow spectral interval. Polynomial approximation theory constrains how rapidly a bounded low-degree polynomial can vary.
+
+These observations suggest that spectral transformations can redistribute approximation resources, but they do not eliminate the fundamental cost associated with resolving arbitrarily fine spectral structure.
+
+---
+
+## What I Learned
+
+This project became important to my later research for a reason beyond the original algorithm itself.
+
+My initial analysis focused primarily on asymptotic algorithmic complexity. Re-examining the method showed me that claims of quantum advantage must also account for
+
+* spectral precision,
+* Hamiltonian evolution time,
+* oracle implementation,
+* circuit depth,
+* sampling complexity, and
+* physically realizable resource constraints.
+
+This experience motivated my current interest in designing and evaluating quantum algorithms under **realistic computational and hardware constraints**, rather than relying solely on abstract query-complexity improvements.
+
+---
+
+## Key Contributions
+
+* Developed a full-spectrum quantum estimation framework that avoids prior eigenvector preparation.
+* Formulated computational-basis sampling as a mechanism for probabilistically accessing the complete eigenvalue spectrum.
+* Investigated sine-windowed QPE for suppressing spectral leakage and improving finite-shot stability.
+* Demonstrated improved chemical-accuracy success probability for LiH in noiseless simulation.
+* Derived an initial sparse-oracle complexity estimate for full-spectrum recovery.
+* Identified spectral resolution as a critical bottleneck omitted from the initial complexity analysis.
+* Investigated the limitations of polynomial spectral filtering as a possible route around the resolution bottleneck.
+
+---
+
+## Research Topics
+
+`Quantum Algorithms` · `Quantum Phase Estimation` · `Hamiltonian Simulation` · `Sparse Hermitian Matrices` · `Spectrum Estimation` · `Window Functions` · `Polynomial Approximation`
