@@ -2,7 +2,7 @@
 layout: page
 title: Structural Gradient Bias in Hardware-Efficient Quantum Circuits
 description: Identified a spatial trainability failure mode in hardware-efficient ansätze where non-vanishing gradients remain concentrated near local cost operators. Analyzed the mechanism through operator spreading and investigated geometry-aware local scrambling as a minimal intervention for redistributing gradient energy.
-importance: 2
+importance: 3
 category: research
 related_publications: false
 ---
