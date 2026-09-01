@@ -3,7 +3,7 @@
 layout: page
 title: Quantum Algorithm for Finding All Eigenvalues of a Sparse Hermitian Matrix
 description: Developed a full-spectrum quantum estimation scheme without prior eigenvector preparation using computational-basis sampling and sine-windowed QPE. A later re-analysis revealed spectral resolution as a key bottleneck, shaping my current focus on quantum advantage under realistic resource constraints.
-importance: 1
+importance: 2
 category: research
 related_publications: false
 ---
