@@ -1,6 +1,6 @@
 ---
 layout: about
-title: about
+title: Home
 permalink: /
 subtitle: Quantum Algorithm Researcher at Qunova Computing
 
