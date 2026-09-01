@@ -6,8 +6,6 @@ nav: true
 nav_order: 4
 ---
 
-# CV
-
 Download my full curriculum vitae as a PDF.
 
 ### Full CV (PDF)
