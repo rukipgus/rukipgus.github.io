@@ -6,7 +6,7 @@ subtitle: Quantum Algorithm Researcher at Qunova Computing
 
 profile:
   align: right
-  image: prof_pic.png
+  image: seongmuk_pic.png
   image_circular: false # crops the image to make it circular
   more_info: >
     <p>Seoul and Daejeon, Republic of Korea</p>
