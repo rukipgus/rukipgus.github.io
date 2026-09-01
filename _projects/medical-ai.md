@@ -1,80 +1,124 @@
 ---
+
 layout: page
-title: project 5
-description: a project with a background image
-img: assets/img/1.jpg
-importance: 3
-category: fun
+title: Prognostic Modeling for COVID-19 Patients from Longitudinal Blood Tests
+description: Developed a temporal deep-learning pipeline for COVID-19 prognosis prediction from longitudinal blood-test data, addressing limited sample size, label inconsistencies, and clinically informed feature design.
+importance: 4
+category: industry
+related_publications: false
+---------------------------
+
+**Past Industry Research · Medical AI / Clinical Machine Learning**
+
+## Overview
+
+I worked on predicting the clinical prognosis of COVID-19 patients from **longitudinal blood-test measurements**.
+
+The project involved a relatively small clinical dataset, making generalization and data quality particularly important. I therefore focused not only on model architecture, but also on label consistency, auxiliary learning objectives, and the incorporation of clinical knowledge into the modeling pipeline.
+
 ---
 
-Every project has a beautiful feature showcase page.
-It's easy to include images in a flexible 3-column grid format.
-Make your photos 1/3, 2/3, or full width.
+## Problem
 
-To give your project a background in the portfolio page, just add the img tag to the front matter like so:
+Given a sequence of laboratory measurements for each patient,
 
-    ---
-    layout: page
-    title: project
-    description: a project with a background image
-    img: /assets/img/12.jpg
-    ---
+$$
+x_1, x_2, \ldots, x_T,
+$$
 
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/1.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/3.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/5.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Caption photos easily. On the left, a road goes through a tunnel. Middle, leaves artistically fall in a hipster photoshoot. Right, in another hipster photoshoot, a lumberjack grasps a handful of pine needles.
-</div>
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/5.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    This image can also have a caption. It's like magic.
-</div>
+the goal was to predict the patient's subsequent clinical outcome.
 
-You can also put regular text between your rows of images.
-Say you wanted to write a little bit about your project before you posted the rest of the images.
-You describe how you toiled, sweated, _bled_ for your project, and then... you reveal its glory in the next row of images.
+The main challenges included:
 
-<div class="row justify-content-sm-center">
-    <div class="col-sm-8 mt-3 mt-md-0">
-        {% include figure.liquid path="assets/img/6.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm-4 mt-3 mt-md-0">
-        {% include figure.liquid path="assets/img/11.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    You can also have artistically styled 2/3 + 1/3 images, like these.
-</div>
+* limited training data,
+* heterogeneous longitudinal measurements,
+* inconsistencies between provided labels and actual clinical severity, and
+* the need to generalize reliably to unseen patients.
 
-The code is simple.
-Just wrap your images with `<div class="col-sm">` and place them inside `<div class="row">` (read more about the <a href="https://getbootstrap.com/docs/4.4/layout/grid/">Bootstrap Grid</a> system).
-To make images responsive, add `img-fluid` class to each; for rounded corners and shadows use `rounded` and `z-depth-1` classes.
-Here's the code for the last row of images above:
+Because the data naturally contained temporal structure and the available cohort was limited, I used an **LSTM-based model with attention** to incorporate temporal inductive bias while allowing the model to emphasize informative observations.
 
-{% raw %}
+---
 
-```html
-<div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/6.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-  </div>
-  <div class="col-sm-4 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/11.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-  </div>
-</div>
-```
+## Data Quality and Label Validation
 
-{% endraw %}
+One of the most important issues I identified was a mismatch between some provided outcome labels and the patients' actual clinical severity.
+
+Rather than treating the supplied labels as ground truth without further inspection, I reviewed these inconsistencies and revised the dataset based on the available clinical information.
+
+My contributions at the data level included:
+
+* identifying inconsistencies between outcome labels and clinical status,
+* validating problematic samples, and
+* revising the dataset before model training and evaluation.
+
+This step was particularly important because label errors can directly limit downstream model performance regardless of model architecture.
+
+---
+
+## Multi-Task Learning for Generalization
+
+To reduce overfitting under limited training data, I introduced an additional prediction task that was clinically correlated with the primary prognosis objective.
+
+The model was trained using a combined objective,
+
+$$
+\mathcal{L}
+=
+\mathcal{L}_{\mathrm{main}}
++
+\lambda \mathcal{L}_{\mathrm{aux}},
+$$
+
+where the auxiliary task provided an additional learning signal to the shared representation.
+
+The multi-task formulation acted as an **inductive regularizer**, encouraging the model to learn representations useful across related clinical objectives rather than fitting only the primary outcome labels.
+
+The goal was to improve generalization to unseen patients under severe data limitations.
+
+---
+
+## Clinician-Guided Feature Development
+
+A substantial part of the project involved close communication with medical experts to understand the clinical meaning of the available measurements.
+
+Through these discussions, I worked to:
+
+* identify clinically relevant prognostic factors,
+* validate the interpretation of laboratory variables,
+* distinguish potentially informative measurements from less relevant ones, and
+* design additional derived features based on clinical knowledge.
+
+This collaboration allowed domain knowledge to inform both data analysis and model development rather than treating the clinical dataset purely as a collection of numerical features.
+
+---
+
+## My Contributions
+
+My primary contributions included:
+
+* designing and evaluating an LSTM-attention model for longitudinal clinical data,
+* identifying and correcting inconsistencies in outcome labels,
+* introducing a correlated auxiliary task for multi-task learning,
+* refining the training pipeline to improve generalization under data scarcity,
+* collaborating with clinicians to identify important prognostic factors, and
+* developing clinically informed features for model improvement.
+
+---
+
+## What I Learned
+
+This project reinforced that real-world machine learning performance depends on much more than model architecture alone.
+
+Data integrity, learning-objective design, domain knowledge, and careful validation can be as important as increasing model complexity, particularly when working with small and noisy clinical datasets.
+
+It also gave me practical experience developing machine-learning systems under real-world data and engineering constraints.
+
+---
+
+## Availability
+
+This project was conducted as part of proprietary industry research. Source code, internal datasets, and detailed experimental results are not publicly available.
+
+## Research Topics
+
+`Medical AI` · `Clinical Machine Learning` · `Time-Series Modeling` · `LSTM` · `Attention` · `Multi-Task Learning` · `Data Quality` · `Feature Engineering`
