@@ -2,7 +2,7 @@
 layout: page
 title: Prognostic Modeling for COVID-19 Patients from Longitudinal Blood Tests
 description: Developed a temporal deep-learning pipeline for COVID-19 prognosis prediction from longitudinal blood-test data, addressing limited sample size, label inconsistencies, and clinically informed feature design.
-importance: 4
+importance: 5
 category: industry
 related_publications: false
 ---
