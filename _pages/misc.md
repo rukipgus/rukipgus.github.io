@@ -5,7 +5,7 @@ title: Misc.
 permalink: /misc/
 nav: true
 nav_order: 5
-------------
+---
 
 ## Travel & Photography
 
