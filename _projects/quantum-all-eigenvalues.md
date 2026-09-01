@@ -22,7 +22,7 @@ The project combined **Hamiltonian simulation, quantum phase estimation, computa
 
 ## Problem
 
-Given an \(N \times N\) sparse Hermitian matrix \(H\), the goal is to estimate all of its eigenvalues
+Given an $N \times N$ sparse Hermitian matrix $H$, the goal is to estimate all of its eigenvalues
 
 $$
 \{\lambda_1,\lambda_2,\ldots,\lambda_N\},
@@ -48,7 +48,7 @@ $$
 
 be the spectral decomposition of the Hermitian matrix.
 
-Instead of preparing an eigenstate \(|u_j\rangle\), I used computational-basis states \(|b\rangle\) as inputs:
+Instead of preparing an eigenstate $|u_j\rangle$, I used computational-basis states $|b\rangle$ as inputs:
 
 $$
 |b\rangle = \sum_{j=1}^{N} \alpha_{bj}|u_j\rangle.
@@ -86,7 +86,7 @@ $$
 O\!\left(\frac{1}{\delta^4}\right),
 $$
 
-where \(\delta\) denotes the distance from the target phase.
+where $\delta$ denotes the distance from the target phase.
 
 In a noiseless LiH simulation, sine-windowed QPE increased the probability of estimating the ground-state energy within chemical accuracy from **82% to 97%**.
 
@@ -102,7 +102,7 @@ $$
 \tilde{O}\!\left(Ns^2(\log N)^2\right),
 $$
 
-where \(N\) is the matrix dimension and \(s\) denotes matrix sparsity.
+where $N$ is the matrix dimension and $s$ denotes matrix sparsity.
 
 This analysis suggested that quantum spectrum reconstruction could substantially reduce the computational cost relative to conventional full diagonalization.
 
@@ -114,7 +114,7 @@ However, this complexity estimate did not fully account for the physical cost re
 
 I later revisited the algorithm from the perspective of finite spectral resolution.
 
-If \(N\) eigenvalues occupy a bounded spectral interval, neighboring eigenvalues can become separated by gaps
+If $N$ eigenvalues occupy a bounded spectral interval, neighboring eigenvalues can become separated by gaps
 
 $$
 \Delta_{\min}=O\!\left(\frac{1}{\mathrm{poly}(N)}\right)
@@ -122,13 +122,13 @@ $$
 
 or smaller.
 
-To distinguish two eigenvalues separated by \(\Delta_{\min}\), phase estimation requires precision
+To distinguish two eigenvalues separated by $\Delta_{\min}$, phase estimation requires precision
 
 $$
 \epsilon < \Delta_{\min}.
 $$
 
-The evolution time or query complexity required to achieve phase precision \(\epsilon\) scales at least inversely with that precision,
+The evolution time or query complexity required to achieve phase precision $\epsilon$ scales at least inversely with that precision,
 
 $$
 T = O\!\left(\frac{1}{\epsilon}\right).
@@ -144,7 +144,7 @@ This observation showed that an oracle-level runtime analysis alone can substant
 
 I also examined whether more sophisticated spectral transformations could circumvent the resolution problem.
 
-One possibility is to construct a narrow spectral filter using polynomial methods such as QSVT. However, isolating spectral features separated by a small gap \(\Delta\) requires increasingly high polynomial degree as the target transition becomes sharper.
+One possibility is to construct a narrow spectral filter using polynomial methods such as QSVT. However, isolating spectral features separated by a small gap $\Delta$ requires increasingly high polynomial degree as the target transition becomes sharper.
 
 Similarly, artificially stretching nearby eigenvalues requires a transformation with a rapidly varying slope within a narrow spectral interval. Polynomial approximation theory constrains how rapidly a bounded low-degree polynomial can vary.
 
