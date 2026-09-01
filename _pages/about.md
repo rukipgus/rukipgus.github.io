@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: Researcher in quantum algorithms and hybrid quantum optimization
+subtitle: Quantum Algorithm Researcher at Qunova Computing
 
 profile:
   align: right
@@ -25,8 +25,8 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](https://www.reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
+I am a quantum algorithm researcher at Qunova Computing. My research focuses on quantum algorithms and hybrid quantum-classical methods, particularly on understanding when they can provide practical advantages under realistic precision, circuit-depth, and hardware constraints.
 
-Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
+I received my B.Eng. in Informatics and Imaging Systems and my M.Eng. in Applied and Cognitive Informatics from Chiba University, where I conducted research under the supervision of Prof. Yuichiro Fujiwara. During my master’s studies, I developed a quantum algorithm for recovering the full spectrum of sparse Hermitian matrices without prior eigenvector preparation.
 
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+A later re-analysis of this work revealed spectral resolution as a critical resource bottleneck, motivating my broader interest in resource-aware evaluations of quantum advantage. More recently, I have been developing hybrid quantum-classical methods for the Shortest Vector Problem (SVP) on lattice instances constructed using Kannan and Bai–Galbraith embeddings.
