@@ -23,10 +23,10 @@ The sunsets remain particularly memorable to me—the waves, the people enjoying
 
 <div class="row">
   <div class="col-sm mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/misc/bali-1.jpg" title="Bali" class="img-fluid rounded z-depth-1" %}
+    {% include figure.liquid loading="eager" path="assets/img/misc/bali-1.jpeg" title="Bali" class="img-fluid rounded z-depth-1" %}
   </div>
   <div class="col-sm mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/misc/bali-2.jpg" title="Bali sunset" class="img-fluid rounded z-depth-1" %}
+    {% include figure.liquid loading="eager" path="assets/img/misc/bali-2.jpeg" title="Bali sunset" class="img-fluid rounded z-depth-1" %}
   </div>
 </div>
 
@@ -42,10 +42,10 @@ The contrast between daytime Hong Kong and its streets after dark was one of the
 
 <div class="row">
   <div class="col-sm mt-3 mt-md-0">
-    {% include figure.liquid loading="lazy" path="assets/img/misc/hongkong-1.jpg" title="Hong Kong" class="img-fluid rounded z-depth-1" %}
+    {% include figure.liquid loading="lazy" path="assets/img/misc/hongkong-1.jpeg" title="Hong Kong" class="img-fluid rounded z-depth-1" %}
   </div>
   <div class="col-sm mt-3 mt-md-0">
-    {% include figure.liquid loading="lazy" path="assets/img/misc/hongkong-2.jpg" title="Hong Kong at night" class="img-fluid rounded z-depth-1" %}
+    {% include figure.liquid loading="lazy" path="assets/img/misc/hongkong-2.jpeg" title="Hong Kong at night" class="img-fluid rounded z-depth-1" %}
   </div>
 </div>
 
@@ -64,7 +64,7 @@ I also visited Singapore for the Formula 1 race with friends, which showed me a 
     {% include figure.liquid loading="lazy" path="assets/img/misc/singapore-f1.jpg" title="Formula 1 in Singapore" class="img-fluid rounded z-depth-1" %}
   </div>
   <div class="col-sm mt-3 mt-md-0">
-    {% include figure.liquid loading="lazy" path="assets/img/misc/singapore-satay.jpg" title="Satay in Singapore" class="img-fluid rounded z-depth-1" %}
+    {% include figure.liquid loading="lazy" path="assets/img/misc/singapore-satay.jpeg" title="Satay in Singapore" class="img-fluid rounded z-depth-1" %}
   </div>
   <div class="col-sm mt-3 mt-md-0">
     {% include figure.liquid loading="lazy" path="assets/img/misc/singapore-bar.jpg" title="A cocktail bar in Singapore" class="img-fluid rounded z-depth-1" %}
