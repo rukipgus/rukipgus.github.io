@@ -6,7 +6,7 @@ description: Developed a full-spectrum quantum estimation scheme without prior e
 importance: 1
 category: research
 related_publications: false
----------------------------
+---
 
 **M.S. Thesis Research**
 
