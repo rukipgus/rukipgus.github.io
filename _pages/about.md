@@ -29,4 +29,5 @@ I am a quantum algorithm researcher at Qunova Computing. My research focuses on 
 
 I received my B.Eng. in Informatics and Imaging Systems and my M.Eng. in Applied and Cognitive Informatics from Chiba University, where I conducted research under the supervision of Prof. Yuichiro Fujiwara. During my master’s studies, I developed a quantum algorithm for recovering the full spectrum of sparse Hermitian matrices without prior eigenvector preparation.
 
-A later re-analysis of this work revealed spectral resolution as a critical resource bottleneck, motivating my broader interest in resource-aware evaluations of quantum advantage. More recently, I have been developing hybrid quantum-classical methods for the Shortest Vector Problem (SVP) on lattice instances constructed using Kannan and Bai–Galbraith embeddings.
+A later re-analysis of this work revealed spectral resolution as a critical resource bottleneck, motivating my broader interest in resource-aware evaluations of quantum advantage. My current research focuses on hybrid quantum-classical methods for the Shortest Vector Problem (SVP) on structured lattice instances.
+
