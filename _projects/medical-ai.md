@@ -1,7 +1,8 @@
 ---
+
 layout: page
 title: Prognostic Modeling for COVID-19 Patients from Longitudinal Blood Tests
-description: Developed a temporal deep-learning pipeline for COVID-19 prognosis prediction from longitudinal blood-test data, addressing limited sample size, label inconsistencies, and clinically informed feature design.
+description: Developed a temporal deep-learning pipeline for COVID-19 prognosis prediction from longitudinal blood-test data in collaboration with Samsung Medical Center, addressing limited sample size, label inconsistencies, and clinically informed feature design.
 importance: 5
 category: research
 related_publications: false
@@ -9,11 +10,13 @@ related_publications: false
 
 **Past Industry Research · Medical AI / Clinical Machine Learning**
 
+*Conducted in collaboration with Samsung Medical Center*
+
 ## Overview
 
-I worked on predicting the clinical prognosis of COVID-19 patients from **longitudinal blood-test measurements**.
+This project was conducted in collaboration with **Samsung Medical Center** to develop a prognostic model for COVID-19 patients using **longitudinal blood-test measurements**.
 
-The project involved a relatively small clinical dataset, making generalization and data quality particularly important. I therefore focused not only on model architecture, but also on label consistency, auxiliary learning objectives, and the incorporation of clinical knowledge into the modeling pipeline.
+The project involved a relatively small clinical dataset, making generalization and data quality particularly important. I therefore focused not only on model architecture, but also on label consistency, auxiliary learning objectives, and the incorporation of clinical knowledge into the modeling pipeline through close collaboration with medical experts.
 
 ---
 
@@ -42,13 +45,13 @@ Because the data naturally contained temporal structure and the available cohort
 
 One of the most important issues I identified was a mismatch between some provided outcome labels and the patients' actual clinical severity.
 
-Rather than treating the supplied labels as ground truth without further inspection, I reviewed these inconsistencies and revised the dataset based on the available clinical information.
+Rather than treating the supplied labels as ground truth without further inspection, I investigated these inconsistencies and worked with the available clinical information to refine the dataset prior to model development.
 
 My contributions at the data level included:
 
 * identifying inconsistencies between outcome labels and clinical status,
-* validating problematic samples, and
-* revising the dataset before model training and evaluation.
+* reviewing and validating problematic samples, and
+* refining the dataset before model training and evaluation.
 
 This step was particularly important because label errors can directly limit downstream model performance regardless of model architecture.
 
@@ -78,16 +81,16 @@ The goal was to improve generalization to unseen patients under severe data limi
 
 ## Clinician-Guided Feature Development
 
-A substantial part of the project involved close communication with medical experts to understand the clinical meaning of the available measurements.
+A substantial part of the project involved close collaboration with medical experts at **Samsung Medical Center** to understand the clinical significance of the available laboratory measurements and patient outcomes.
 
 Through these discussions, I worked to:
 
 * identify clinically relevant prognostic factors,
-* validate the interpretation of laboratory variables,
+* validate the interpretation of laboratory variables and patient outcomes,
 * distinguish potentially informative measurements from less relevant ones, and
-* design additional derived features based on clinical knowledge.
+* design derived features informed by clinical knowledge.
 
-This collaboration allowed domain knowledge to inform both data analysis and model development rather than treating the clinical dataset purely as a collection of numerical features.
+This collaboration allowed domain expertise to directly inform data validation, feature development, and model design rather than treating the clinical dataset purely as a collection of numerical features.
 
 ---
 
@@ -96,10 +99,10 @@ This collaboration allowed domain knowledge to inform both data analysis and mod
 My primary contributions included:
 
 * designing and evaluating an LSTM-attention model for longitudinal clinical data,
-* identifying and correcting inconsistencies in outcome labels,
-* introducing a correlated auxiliary task for multi-task learning,
+* identifying and correcting inconsistencies in patient outcome labels,
+* introducing a clinically correlated auxiliary task for multi-task learning,
 * refining the training pipeline to improve generalization under data scarcity,
-* collaborating with clinicians to identify important prognostic factors, and
+* collaborating with medical experts at Samsung Medical Center to identify relevant prognostic factors, and
 * developing clinically informed features for model improvement.
 
 ---
@@ -110,13 +113,13 @@ This project reinforced that real-world machine learning performance depends on 
 
 Data integrity, learning-objective design, domain knowledge, and careful validation can be as important as increasing model complexity, particularly when working with small and noisy clinical datasets.
 
-It also gave me practical experience developing machine-learning systems under real-world data and engineering constraints.
+It also gave me practical experience working with domain experts and developing machine-learning systems under real-world clinical data and engineering constraints.
 
 ---
 
 ## Availability
 
-This project was conducted as part of proprietary industry research. Source code, internal datasets, and detailed experimental results are not publicly available.
+This project was conducted as part of proprietary industry research in collaboration with Samsung Medical Center. Source code, internal datasets, and detailed experimental results are not publicly available.
 
 ## Research Topics
 
