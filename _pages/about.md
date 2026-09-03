@@ -25,7 +25,7 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I am a quantum algorithm researcher at Qunova Computing. My research focuses on quantum algorithms and hybrid quantum-classical methods, particularly on understanding when they can provide practical advantages under realistic precision, circuit-depth, and hardware constraints.
+I am a quantum algorithm researcher at Qunova Computing. My research focuses on quantum algorithms and hybrid quantum-classical methods, particularly on understanding when they can provide practical advantages under realistic hardware and resources constraints.
 
 I received my B.Eng. in Informatics and Imaging Systems and my M.Eng. in Applied and Cognitive Informatics from Chiba University, where I conducted research under the supervision of Prof. Yuichiro Fujiwara. During my master’s studies, I developed a quantum algorithm for recovering the full spectrum of sparse Hermitian matrices without prior eigenvector preparation.
 
