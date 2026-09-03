@@ -25,7 +25,7 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I am a quantum algorithm researcher at Qunova Computing. My broader research goal is to design quantum algorithms that can outperform classical methods under realistic hardware and resource constraints, while clarifying the conditions under which practical quantum advantage can be achieved.
+I am a quantum algorithm researcher at Qunova Computing. My broader research goal is to design quantum algorithms that can outperform classical methods under realistic hardware constraints and for real-world problems, while clarifying the conditions under which practical quantum advantage can be achieved.
 
 I received my B.Eng. in Informatics and Imaging Systems from the Faculty of Engineering at Chiba University, with support from the Japan-Korea Joint Scholarship Program for Science and Engineering Students. I later earned my M.Eng. in Applied and Cognitive Informatics from the Division of Mathematics and Informatics at Chiba University, conducting research under the supervision of Prof. Yuichiro Fujiwara.
 
