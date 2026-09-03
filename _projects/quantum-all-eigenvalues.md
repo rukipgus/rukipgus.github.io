@@ -48,7 +48,7 @@ $$
 
 be the spectral decomposition of the Hermitian matrix.
 
-Instead of preparing an eigenstate $|u_j\rangle$, I used computational-basis states $|b\rangle$ as inputs:
+Instead of preparing an eigenstate $\lvert u_j\rangle$, I used computational-basis states $\lvert b\rangle$ as inputs:
 
 $$
 |b\rangle = \sum_{j=1}^{N} \alpha_{bj}|u_j\rangle.
