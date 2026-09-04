@@ -141,7 +141,7 @@ However, this complexity estimate did not fully account for the physical cost re
 
 I later revisited the algorithm from the perspective of finite spectral resolution.
 
-If $N$ eigenvalues occupy a bounded spectral interval, neighboring eigenvalues can become separated by gaps
+If $N$ eigenvalues occupy a bounded spectral interval, neighboring eigenvalues can become separated by gaps as small as
 
 $$
 \Delta_{\min}
