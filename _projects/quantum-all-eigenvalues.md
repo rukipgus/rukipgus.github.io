@@ -141,29 +141,9 @@ However, this complexity estimate did not fully account for the physical cost re
 
 I later revisited the algorithm from the perspective of finite spectral resolution.
 
-If $N$ eigenvalues occupy a bounded spectral interval, neighboring eigenvalues can become separated by gaps as small as
+If $N$ eigenvalues occupy a bounded spectral interval, the minimum spacing between neighboring eigenvalues can scale as $\Delta_{\mathrm{min}} = O(1/\mathrm{poly}(N))$ or become even smaller.
 
-$$
-\Delta_{\min}
-=
-O\!\left(\frac{1}{\operatorname{poly}(N)}\right)
-$$
-
-or smaller.
-
-To distinguish two eigenvalues separated by $\Delta_{\min}$, phase estimation requires precision
-
-$$
-\epsilon < \Delta_{\min}.
-$$
-
-The evolution time or query complexity required to achieve phase precision $\epsilon$ scales at least inversely with that precision,
-
-$$
-T
-=
-\Omega\!\left(\frac{1}{\epsilon}\right).
-$$
+To distinguish two eigenvalues separated by $\Delta_{\mathrm{min}}$, phase estimation requires a precision $\epsilon < \Delta_{\mathrm{min}}$. The evolution time or query complexity required to achieve this precision scales at least inversely with $\epsilon$, giving a lower-bound scaling of $T = \Omega(1/\epsilon)$.
 
 As a result, the dominant cost can shift from the **number of samples** required to collect the eigenvalues to the **resolution required for each individual sample**.
 
