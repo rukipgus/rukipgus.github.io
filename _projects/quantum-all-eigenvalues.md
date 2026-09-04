@@ -93,7 +93,7 @@ For the full **12-qubit LiH/STO-3G Hamiltonian**, sine-windowed QPE improved the
 
 {% include figure.liquid
    loading="eager"
-   path="assets/img/projects/all-eigenvalues/sine_window_lih.png"
+   path="assets/img/all-eigenvalues/sine_window_lih.png"
    class="img-fluid rounded z-depth-1"
    zoomable=true %}
 
