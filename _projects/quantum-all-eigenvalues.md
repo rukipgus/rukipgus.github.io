@@ -1,8 +1,7 @@
 ---
-
 layout: page
 title: Quantum Algorithm for Finding All Eigenvalues of a Sparse Hermitian Matrix
-description: Developed a full-spectrum quantum estimation scheme without prior eigenvector preparation using computational-basis sampling and sine-windowed QPE. A later re-analysis revealed spectral resolution as a key bottleneck, shaping my current focus on quantum advantage under realistic resource constraints.
+description: Developed a full-spectrum quantum estimation scheme without prior eigenstate preparation using computational-basis sampling and QPE, and investigated sine-windowed QPE as a finite-precision enhancement. A later re-analysis revealed spectral resolution as a key bottleneck, shaping my current focus on quantum advantage under realistic resource constraints.
 importance: 2
 category: research
 related_publications: false
@@ -43,7 +42,12 @@ This led to the central question of my thesis:
 Let
 
 $$
-H = \sum_{j=1}^{N} \lambda_j |u_j\rangle\langle u_j|
+H
+=
+\sum_{j=1}^{N}
+\lambda_j
+\lvert u_j\rangle
+\langle u_j\rvert
 $$
 
 be the spectral decomposition of the Hermitian matrix.
@@ -51,7 +55,11 @@ be the spectral decomposition of the Hermitian matrix.
 Instead of preparing an eigenstate $\lvert u_j\rangle$, I used computational-basis states $\lvert b\rangle$ as inputs:
 
 $$
-|b\rangle = \sum_{j=1}^{N} \alpha_{bj}|u_j\rangle.
+\lvert b\rangle
+=
+\sum_{j=1}^{N}
+\alpha_{bj}
+\lvert u_j\rangle.
 $$
 
 Applying Hamiltonian evolution and QPE then produces eigenvalue estimates according to the overlap probabilities
@@ -68,7 +76,7 @@ Repeated measurements can therefore recover different eigenvalues without explic
 
 ## Sine-Windowed Quantum Phase Estimation
 
-A second part of the project focused on improving the stability of phase estimation.
+A second part of the project focused on improving the finite-precision behavior of phase estimation.
 
 Standard QPE uses a uniform superposition over the phase-estimation register. I instead investigated a **sine-windowed initial state**, assigning amplitudes according to a sinusoidal window before Hamiltonian evolution.
 
@@ -86,9 +94,37 @@ $$
 O\!\left(\frac{1}{\delta^4}\right),
 $$
 
-where $\delta$ denotes the distance from the target phase.
+where $\delta$ denotes the distance from the target phase in units of the QPE bin width.
 
-In a noiseless LiH simulation, sine-windowed QPE increased the probability of estimating the ground-state energy within chemical accuracy from **82% to 97%**.
+I later examined how this improvement depends on the alignment between the true phase and the discrete QPE grid. To avoid relying on a favorable grid position, I swept the target phase across a full bin and evaluated both average- and worst-case success probabilities.
+
+For the full **12-qubit LiH/STO-3G Hamiltonian**, sine-windowed QPE improved the grid-offset-averaged single-shot probability of estimating the ground-state energy within chemical accuracy from **88.4% to 96.6%** at $N_{\mathrm{EVAL}}=13$. The corresponding worst-case probability improved from **79.0% to 94.9%**.
+
+{% include figure.liquid
+   loading="eager"
+   path="assets/img/projects/all-eigenvalues/sine_window_lih.png"
+   class="img-fluid rounded z-depth-1"
+   zoomable=true %}
+
+*Single-shot chemical-accuracy success for conventional and sine-windowed QPE on the full 12-qubit LiH/STO-3G Hamiltonian. Results are shown both averaged over energy-grid offsets and for the worst-case offset.*
+
+### Robustness under Implementation Errors
+
+I then examined whether the idealized advantage of sine-windowed QPE survives imperfect Hamiltonian simulation and hardware noise.
+
+With Trotterized evolution, the advantage was preserved when the systematic phase bias remained small relative to the QPE bin width. In the tested LiH active-space instances, the sine window retained its worst-case advantage for biases of approximately $0.14$ bin or less, whereas biases of $0.4$ bin or more could reverse the advantage.
+
+Under calibration-based noise models from IBM Heron processors, the idealized sine-window advantage disappeared in the tested circuits. The observed difference was consistent in magnitude with the additional implementation overhead of the sine-window state preparation, including an extra ancilla and additional entangling gates.
+
+These results showed that improved phase-estimation kernels do not automatically translate into improved hardware-level performance: the advantage depends on sufficiently accurate Hamiltonian evolution and sufficiently low implementation noise.
+
+| Setting | Observation |
+| --- | --- |
+| Ideal QPE kernel, $r \in [1,2)$ | Sine window improves both average- and worst-case single-shot success |
+| Full 12-qubit LiH, $N_{\mathrm{EVAL}}=13$ | Average: **88.4% → 96.6%**; worst case: **79.0% → 94.9%** |
+| Trotter bias $\lesssim 0.14$ bin | Sine-window advantage preserved in the tested instances |
+| Trotter bias $\gtrsim 0.4$ bin | Worst-case advantage can reverse |
+| IBM Heron calibration-based noise | Idealized advantage disappears in the tested circuits |
 
 ---
 
@@ -104,7 +140,7 @@ $$
 
 where $N$ is the matrix dimension and $s$ denotes matrix sparsity.
 
-This analysis suggested that quantum spectrum reconstruction could substantially reduce the computational cost relative to conventional full diagonalization.
+This analysis suggested that quantum spectrum reconstruction could substantially reduce the computational cost relative to conventional full diagonalization under the assumed oracle model.
 
 However, this complexity estimate did not fully account for the physical cost required to **resolve increasingly dense eigenvalues**.
 
@@ -117,7 +153,9 @@ I later revisited the algorithm from the perspective of finite spectral resoluti
 If $N$ eigenvalues occupy a bounded spectral interval, neighboring eigenvalues can become separated by gaps
 
 $$
-\Delta_{\min}=O\!\left(\frac{1}{\mathrm{poly}(N)}\right)
+\Delta_{\min}
+=
+O\!\left(\frac{1}{\mathrm{poly}(N)}\right)
 $$
 
 or smaller.
@@ -131,7 +169,9 @@ $$
 The evolution time or query complexity required to achieve phase precision $\epsilon$ scales at least inversely with that precision,
 
 $$
-T = O\!\left(\frac{1}{\epsilon}\right).
+T
+=
+\Omega\!\left(\frac{1}{\epsilon}\right).
 $$
 
 As a result, the dominant cost can shift from the **number of samples** required to collect the eigenvalues to the **resolution required for each individual sample**.
@@ -156,7 +196,11 @@ These observations suggest that spectral transformations can redistribute approx
 
 This project became important to my later research for a reason beyond the original algorithm itself.
 
-My initial analysis focused primarily on asymptotic algorithmic complexity. Re-examining the method showed me that claims of quantum advantage must also account for
+My initial analysis focused primarily on asymptotic algorithmic complexity. Re-examining the method showed that the apparent advantage of full-spectrum reconstruction can be limited by the spectral resolution required for each phase-estimation sample.
+
+The later window-function experiments reinforced the same lesson at the level of a single algorithmic primitive: an improvement that is clear under ideal phase estimation can be reduced or eliminated by Hamiltonian-simulation error and circuit-level noise.
+
+Together, these analyses showed me that claims of quantum advantage must also account for
 
 * spectral precision,
 * Hamiltonian evolution time,
@@ -171,10 +215,10 @@ This experience motivated my current interest in designing and evaluating quantu
 
 ## Key Contributions
 
-* Developed a full-spectrum quantum estimation framework that avoids prior eigenvector preparation.
+* Developed a full-spectrum quantum estimation framework that avoids prior eigenstate preparation.
 * Formulated computational-basis sampling as a mechanism for probabilistically accessing the complete eigenvalue spectrum.
-* Investigated sine-windowed QPE for suppressing spectral leakage and improving finite-shot stability.
-* Demonstrated improved chemical-accuracy success probability for LiH in noiseless simulation.
+* Investigated sine-windowed QPE for suppressing spectral leakage and quantified its average- and worst-case finite-precision advantages across phase-grid offsets.
+* Validated the sine-window improvement on the full 12-qubit LiH/STO-3G Hamiltonian and characterized Trotter error and calibration-based hardware noise as practical limits to the idealized advantage.
 * Derived an initial sparse-oracle complexity estimate for full-spectrum recovery.
 * Identified spectral resolution as a critical bottleneck omitted from the initial complexity analysis.
 * Investigated the limitations of polynomial spectral filtering as a possible route around the resolution bottleneck.
