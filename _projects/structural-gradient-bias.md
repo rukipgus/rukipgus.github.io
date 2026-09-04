@@ -59,7 +59,16 @@ This motivates a distinction between
 * **global gradient suppression**, associated with barren plateaus, and
 * **spatial gradient concentration**, associated with structural gradient bias.
 
-The second can impair trainability even when the first is absent.
+The second can impair trainability even when the first is absent. Moreover, the spatial profile is strongly geometry dependent: modifying only a small number of local gates can shift where the dominant gradient regions appear without making the distribution globally uniform.
+
+{% include figure.liquid
+   loading="lazy"
+   path="assets/img/structural-gradient-bias/per_qubit_gradient_profile.png"
+   class="img-fluid rounded z-depth-1"
+   zoomable=true
+%}
+
+*Per-qubit gradient-energy profiles at $N=14$ and $L=30$. The baseline exhibits a center-weighted gradient distribution, while different local-scrambling layouts reshape the dominant learning regions. In particular, the binary layout produces off-center gradient hotspots rather than a uniformly distributed learning signal.*
 
 ---
 
@@ -131,14 +140,14 @@ The idea is to insert small non-commuting rotations near the support of the loca
 
 The modification is intentionally local and uses gate generators already available within the hardware-efficient ansatz family. This allows the intervention to alter the local propagation structure without requiring a qualitatively different variational model.
 
-The intended effect is
+The intended mechanism is
 
 $$
 \text{local non-commutativity}
 \rightarrow
 \text{enhanced operator branching}
 \rightarrow
-\text{broader gradient support}.
+\text{redistributed gradient support}.
 $$
 
 Rather than increasing gradients uniformly everywhere, local scrambling acts as a **geometry-aware preconditioner** that redistributes learning signal within the finite operator light cone.
@@ -186,29 +195,35 @@ H_{\mathrm{grad}}
 -\sum_i p_i \log p_i.
 $$
 
-Higher gradient entropy corresponds to a more spatially distributed learning signal.
+Higher gradient entropy corresponds to gradient energy being distributed across a larger set of parameters, while lower entropy indicates stronger concentration in a smaller subset of the circuit.
 
 ### Spatial Trajectories
 
-I also track the evolution of local observables and gradient distributions during optimization rather than examining only initialization.
+I also tracked the evolution of the objective, structural bias, and gradient entropy throughout optimization rather than examining only initialization.
 
-This reveals whether a circuit maintains broad participation throughout training or progressively collapses into a localized learning region.
-
+This makes it possible to distinguish circuits that initially exhibit similar gradient scales but evolve toward qualitatively different spatial learning patterns.
 ---
 
 ## Observed Trade-off
 
-The experiments revealed a trade-off between **convergence speed** and **spatial fairness of the learning signal**.
+The experiments revealed a trade-off between **convergence speed** and the **spatial distribution of the learning signal**.
 
-The baseline hardware-efficient ansatz can reduce the local objective rapidly because a large fraction of its gradient energy is concentrated close to the cost support.
+The baseline hardware-efficient ansatz reduced the local objective most rapidly, consistent with a learning signal strongly aligned with the local cost region. Some scrambling layouts converged more slowly but maintained lower structural bias or higher gradient entropy during parts of the optimization trajectory.
 
-Some local-scrambling layouts converge more slowly, but reduce center–edge gradient imbalance or maintain higher gradient entropy over a finite spatial region.
+The effect was strongly geometry dependent. In the $N=14$, $L=30$ experiments, center and tri-center layouts maintained more favorable structural-bias or gradient-entropy behavior over substantial portions of training, whereas binary and staggered layouts could instead develop stronger late-time spatial imbalance.
 
-Importantly, the improvement is geometry dependent.
+Importantly, local scrambling did not simply homogenize the gradients. Different layouts reshaped the spatial distribution in different ways: a binary layout, for example, shifted dominant gradient regions away from the center and produced multiple spatial hotspots.
 
-A single central scrambler can partially smooth the central gradient peak, whereas distributed or binary layouts can move the dominant learning regions away from the center rather than producing perfectly uniform gradients.
+Thus, the relevant question is not simply whether scrambling increases gradient magnitude, but **how a chosen circuit geometry redistributes trainability across the parameter space**.
 
-Thus, local scrambling should not be interpreted as a universal homogenizer. Its effect depends on the geometry of both the cost support and the scrambling layout.
+{% include figure.liquid
+   loading="lazy"
+   path="assets/img/structural-gradient-bias/optimization_dynamics.png"
+   class="img-fluid rounded z-depth-1"
+   zoomable=true
+%}
+
+*Optimization dynamics at $N=14$ and $L=30$. The baseline achieves the fastest cost reduction, while scrambling layouts exhibit different trade-offs in center–edge structural bias and gradient entropy. The results show that improved spatial balance is geometry dependent and does not necessarily coincide with faster convergence.*
 
 ---
 
@@ -236,7 +251,7 @@ In this sense, structural gradient bias is not only an optimization issue but al
 
 * Identified **structural gradient bias** as a trainability failure mode distinct from conventional global barren plateaus.
 * Connected spatial gradient concentration to **operator spreading, commutativity, and finite circuit light cones**.
-* Proposed **geometry-aware local scrambling** as a minimal intervention for enhancing local operator growth.
+* Proposed **geometry-aware local scrambling** as a minimal intervention for modifying local operator growth and redistributing spatial gradient structure.
 * Introduced quantitative diagnostics based on **center–edge structural bias, gradient entropy, and spatial optimization trajectories**.
 * Characterized a trade-off between rapid local convergence and more spatially balanced parameter participation.
 * Identified finite correlation length and scrambler density as important constraints on scalability.
