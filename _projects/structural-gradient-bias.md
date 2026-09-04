@@ -7,7 +7,6 @@ category: research
 related_publications: false
 ---
 
-
 **Research Project · Variational Quantum Algorithms / Quantum Machine Learning**
 
 ## Overview
@@ -24,33 +23,11 @@ When a local cost observable is used with a hardware-efficient ansatz, parameter
 
 ## Structural Gradient Bias
 
-Consider a parameterized quantum circuit
+Consider a parameterized quantum circuit $U(\theta)$ and a local cost observable $O$.
 
-$$
-U(\boldsymbol{\theta})
-$$
+The objective is $C(\theta)=\langle 0 \vert U^\dagger(\theta) O U(\theta) \vert 0\rangle$.
 
-and a local cost observable \(O\). The objective is
-
-$$
-C(\boldsymbol{\theta})
-=
-\langle 0 \rvert
-U^\dagger(\boldsymbol{\theta})
-O
-U(\boldsymbol{\theta})
-\lvert 0\rangle
-$$
-
-For each parameter $\theta_i$, the gradient
-
-$$
-g_i
-=
-\frac{\partial C}{\partial \theta_i}
-$$
-
-measures how strongly that parameter participates in optimization.
+For each parameter $\theta_i$, the gradient $g_i=\partial C/\partial\theta_i$ measures how strongly that parameter participates in optimization.
 
 A non-vanishing total gradient norm does not guarantee that this learning signal is spatially well distributed. In hardware-efficient circuits, I observed that gradient energy can remain concentrated around parameters geometrically close to the local observable, while parameters farther away contribute only weakly.
 
@@ -76,25 +53,13 @@ The second can impair trainability even when the first is absent. Moreover, the 
 
 I analyzed this behavior in the Heisenberg picture.
 
-Propagating the local observable backward through the circuit gives
-
-$$
-O(t)
-=
-U^\dagger(t)\,O\,U(t)
-$$
+Propagating the local observable backward through the circuit gives $O(t)=U^\dagger(t) O U(t)$.
 
 As the operator spreads across additional qubits, more parameters can become coupled to the effective observable and therefore receive meaningful gradient signal.
 
-This suggests a direct connection between
+This suggests the qualitative connection
 
-$$
-\text{operator spreading}
-\quad\longrightarrow\quad
-\text{larger effective learning region}
-\quad\longrightarrow\quad
-\text{more spatially distributed gradients}.
-$$
+**operator spreading → larger effective learning region → more spatially distributed gradients.**
 
 Conversely, when layers commute with the relevant components of the local observable, backward operator growth can be strongly restricted. The learning signal then remains confined to a smaller effective light cone.
 
@@ -102,31 +67,15 @@ Conversely, when layers commute with the relevant components of the local observ
 
 ## Commutativity Bottleneck
 
-A particularly important case occurs when the local cost is dominated by \(Z\)-type operators and nearby circuit generators commute with those operators.
+A particularly important case occurs when the local cost is dominated by $Z$-type operators and nearby circuit generators commute with those operators.
 
-For example,
-
-$$
-[Z,R_Z(\theta)] = 0.
-$$
+For example, $[Z,R_Z(\theta)]=0$.
 
 Such commuting transformations do not generate new Pauli components under conjugation and therefore contribute little to operator branching.
 
-By contrast, a non-commuting local rotation such as
+By contrast, a non-commuting local rotation such as $R_X(\phi)$ transforms $Z$ into $R_X^\dagger(\phi) Z R_X(\phi)$, generating a mixture of non-commuting Pauli components.
 
-$$
-R_X(\phi)
-$$
-
-transforms
-
-$$
-Z
-\mapsto
-R_X^\dagger(\phi) Z R_X(\phi),
-$$
-
-generating a mixture of non-commuting Pauli components. These components can subsequently propagate through entangling layers and couple the observable to a larger region of the circuit.
+These components can subsequently propagate through entangling layers and couple the observable to a larger region of the circuit.
 
 This led me to view trainability partly as a problem of **operator-growth geometry**, rather than solely as a problem of gradient magnitude.
 
@@ -142,13 +91,7 @@ The modification is intentionally local and uses gate generators already availab
 
 The intended mechanism is
 
-$$
-\text{local non-commutativity}
-\rightarrow
-\text{enhanced operator branching}
-\rightarrow
-\text{redistributed gradient support}.
-$$
+**local non-commutativity → enhanced operator branching → redistributed gradient support.**
 
 Rather than increasing gradients uniformly everywhere, local scrambling acts as a **geometry-aware preconditioner** that redistributes learning signal within the finite operator light cone.
 
@@ -162,40 +105,15 @@ To characterize this spatial trainability behavior, I introduced three complemen
 
 I measure the imbalance between gradient energy near the local cost support and that received by distant parameters.
 
-A generic form is
-
-$$
-B
-=
-\log
-\left(
-\frac{E_{\mathrm{center}}}
-     {E_{\mathrm{edge}}}
-\right)
-$$
-
-where $E_{\mathrm{center}}$ and $E_{\mathrm{edge}}$ denote gradient-energy aggregates over central and distant regions.
+A generic measure is $B=\log(E_{\mathrm{center}}/E_{\mathrm{edge}})$, where $E_{\mathrm{center}}$ and $E_{\mathrm{edge}}$ denote gradient-energy aggregates over central and distant regions.
 
 A large positive $B$ indicates strong localization of the learning signal.
 
 ### Gradient Entropy
 
-To quantify how evenly gradient energy is distributed across the circuit, I normalize the local gradient energies,
+To quantify how evenly gradient energy is distributed across the circuit, I normalize the local gradient energies as $p_i=g_i^2/\sum_j g_j^2$.
 
-$$
-p_i
-=
-\frac{\lvert g_i\rvert^2}
-{\sum_j \lvert g_j\rvert^2}
-$$
-
-and evaluate an entropy-like quantity
-
-$$
-H_{\mathrm{grad}}
-=
--\sum_i p_i \log p_i
-$$
+I then evaluate the entropy-like quantity $H_{\mathrm{grad}}=-\sum_i p_i\log p_i$.
 
 Higher gradient entropy corresponds to gradient energy being distributed across a larger set of parameters, while lower entropy indicates stronger concentration in a smaller subset of the circuit.
 
@@ -204,6 +122,7 @@ Higher gradient entropy corresponds to gradient energy being distributed across 
 I also tracked the evolution of the objective, structural bias, and gradient entropy throughout optimization rather than examining only initialization.
 
 This makes it possible to distinguish circuits that initially exhibit similar gradient scales but evolve toward qualitatively different spatial learning patterns.
+
 ---
 
 ## Observed Trade-off
@@ -233,17 +152,11 @@ Thus, the relevant question is not simply whether scrambling increases gradient 
 
 Local scrambling does not remove finite-range propagation constraints.
 
-The influence of a local modification remains bounded by the circuit's operator light cone and by an effective correlation length \(\xi\).
+The influence of a local modification remains bounded by the circuit's operator light cone and by an effective correlation length $\xi$.
 
 Parameters located at distances much larger than this scale can still experience exponentially suppressed gradients. Consequently, if circuit size grows while the number of scrambling regions remains fixed, center-to-edge structural bias can re-emerge.
 
-This suggests that scalable spatial gradient redistribution may require a scrambler density sufficient to keep each parameter within approximately
-
-$$
-O(\xi)
-$$
-
-of a region that promotes operator growth.
+This suggests that scalable spatial gradient redistribution may require a scrambler density sufficient to keep each parameter within approximately $O(\xi)$ of a region that promotes operator growth.
 
 In this sense, structural gradient bias is not only an optimization issue but also a **circuit-geometry and locality problem**.
 
