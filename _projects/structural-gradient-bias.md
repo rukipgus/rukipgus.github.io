@@ -35,14 +35,14 @@ and a local cost observable \(O\). The objective is
 $$
 C(\boldsymbol{\theta})
 =
-\langle 0|
+\langle 0 \rvert
 U^\dagger(\boldsymbol{\theta})
 O
 U(\boldsymbol{\theta})
-|0\rangle.
+\lvert 0\rangle
 $$
 
-For each parameter \(\theta_i\), the gradient
+For each parameter $\theta_i$, the gradient
 
 $$
 g_i
@@ -81,7 +81,7 @@ Propagating the local observable backward through the circuit gives
 $$
 O(t)
 =
-U^\dagger(t)\,O\,U(t).
+U^\dagger(t)\,O\,U(t)
 $$
 
 As the operator spreads across additional qubits, more parameters can become coupled to the effective observable and therefore receive meaningful gradient signal.
@@ -168,13 +168,15 @@ $$
 B
 =
 \log
+\left(
 \frac{E_{\mathrm{center}}}
-     {E_{\mathrm{edge}}},
+     {E_{\mathrm{edge}}}
+\right)
 $$
 
-where \(E_{\mathrm{center}}\) and \(E_{\mathrm{edge}}\) denote gradient-energy aggregates over central and distant regions.
+where $E_{\mathrm{center}}$ and $E_{\mathrm{edge}}$ denote gradient-energy aggregates over central and distant regions.
 
-A large positive \(B\) indicates strong localization of the learning signal.
+A large positive $B$ indicates strong localization of the learning signal.
 
 ### Gradient Entropy
 
@@ -183,8 +185,8 @@ To quantify how evenly gradient energy is distributed across the circuit, I norm
 $$
 p_i
 =
-\frac{|g_i|^2}
-{\sum_j |g_j|^2},
+\frac{\lvert g_i\rvert^2}
+{\sum_j \lvert g_j\rvert^2}
 $$
 
 and evaluate an entropy-like quantity
@@ -192,7 +194,7 @@ and evaluate an entropy-like quantity
 $$
 H_{\mathrm{grad}}
 =
--\sum_i p_i \log p_i.
+-\sum_i p_i \log p_i
 $$
 
 Higher gradient entropy corresponds to gradient energy being distributed across a larger set of parameters, while lower entropy indicates stronger concentration in a smaller subset of the circuit.
