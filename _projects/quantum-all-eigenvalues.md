@@ -42,12 +42,7 @@ This led to the central question of my thesis:
 Let
 
 $$
-H
-=
-\sum_{j=1}^{N}
-\lambda_j
-\lvert u_j\rangle
-\langle u_j\rvert
+H = \sum_{j=1}^{N} \lambda_j \lvert u_j\rangle \langle u_j\rvert
 $$
 
 be the spectral decomposition of the Hermitian matrix.
@@ -55,11 +50,7 @@ be the spectral decomposition of the Hermitian matrix.
 Instead of preparing an eigenstate $\lvert u_j\rangle$, I used computational-basis states $\lvert b\rangle$ as inputs:
 
 $$
-\lvert b\rangle
-=
-\sum_{j=1}^{N}
-\alpha_{bj}
-\lvert u_j\rangle.
+\lvert b\rangle = \sum_{j=1}^{N} \alpha_{bj} \lvert u_j\rangle
 $$
 
 Applying Hamiltonian evolution and QPE then produces eigenvalue estimates according to the overlap probabilities
@@ -155,7 +146,7 @@ If $N$ eigenvalues occupy a bounded spectral interval, neighboring eigenvalues c
 $$
 \Delta_{\min}
 =
-O\!\left(\frac{1}{\mathrm{poly}(N)}\right)
+O\!\left(\frac{1}{\operatorname{poly}(N)}\right)
 $$
 
 or smaller.
