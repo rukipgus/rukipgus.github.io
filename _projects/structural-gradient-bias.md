@@ -36,16 +36,7 @@ This motivates a distinction between
 * **global gradient suppression**, associated with barren plateaus, and
 * **spatial gradient concentration**, associated with structural gradient bias.
 
-The second can impair trainability even when the first is absent. Moreover, the spatial profile is strongly geometry dependent: modifying only a small number of local gates can shift where the dominant gradient regions appear without making the distribution globally uniform.
-
-{% include figure.liquid
-   loading="lazy"
-   path="assets/img/structural-gradient-bias/per_qubit_gradient_profile.png"
-   class="img-fluid rounded z-depth-1"
-   zoomable=true
-%}
-
-*Per-qubit gradient-energy profiles at $N=14$ and $L=30$. The baseline exhibits a center-weighted gradient distribution, while different local-scrambling layouts reshape the dominant learning regions. In particular, the binary layout produces off-center gradient hotspots rather than a uniformly distributed learning signal.*
+The second can impair trainability even when the first is absent. Moreover, the effect is strongly geometry dependent: local circuit modifications can alter how gradient energy is distributed, but they do not necessarily eliminate the spatial imbalance altogether.
 
 ---
 
@@ -131,9 +122,7 @@ The experiments revealed a trade-off between **convergence speed** and the **spa
 
 The baseline hardware-efficient ansatz reduced the local objective most rapidly, consistent with a learning signal strongly aligned with the local cost region. Some scrambling layouts converged more slowly but maintained lower structural bias or higher gradient entropy during parts of the optimization trajectory.
 
-The effect was strongly geometry dependent. In the $N=14$, $L=30$ experiments, center and tri-center layouts maintained more favorable structural-bias or gradient-entropy behavior over substantial portions of training, whereas binary and staggered layouts could instead develop stronger late-time spatial imbalance.
-
-Importantly, local scrambling did not simply homogenize the gradients. Different layouts reshaped the spatial distribution in different ways: a binary layout, for example, shifted dominant gradient regions away from the center and produced multiple spatial hotspots.
+The effect was strongly geometry dependent. In the $N=14$, $L=30$ experiments, centrally placed scrambling layouts could improve structural-bias or gradient-entropy behavior over substantial portions of training, but this did not necessarily translate into uniformly distributed gradients or faster convergence.
 
 Thus, the relevant question is not simply whether scrambling increases gradient magnitude, but **how a chosen circuit geometry redistributes trainability across the parameter space**.
 
@@ -144,7 +133,7 @@ Thus, the relevant question is not simply whether scrambling increases gradient 
    zoomable=true
 %}
 
-*Optimization dynamics at $N=14$ and $L=30$. The baseline achieves the fastest cost reduction, while scrambling layouts exhibit different trade-offs in center–edge structural bias and gradient entropy. The results show that improved spatial balance is geometry dependent and does not necessarily coincide with faster convergence.*
+*Optimization dynamics at $N=14$ and $L=30$. The baseline achieves the fastest cost reduction, while scrambling layouts exhibit different trade-offs in center–edge structural bias and gradient entropy. Improved spatial balance is geometry dependent and does not necessarily coincide with faster convergence.*
 
 ---
 
@@ -155,6 +144,17 @@ Local scrambling does not remove finite-range propagation constraints.
 The influence of a local modification remains bounded by the circuit's operator light cone and by an effective correlation length $\xi$.
 
 Parameters located at distances much larger than this scale can still experience exponentially suppressed gradients. Consequently, if circuit size grows while the number of scrambling regions remains fixed, center-to-edge structural bias can re-emerge.
+
+This behavior is also visible in finite-size scaling. A centrally placed scrambler reduces structural bias relative to the baseline over the tested system sizes, but the bias still increases as the system becomes larger. This is consistent with a redistribution mechanism whose influence remains spatially limited.
+
+{% include figure.liquid
+   loading="lazy"
+   path="assets/img/structural-gradient-bias/finite_size_structural_bias.png"
+   class="img-fluid rounded z-depth-1"
+   zoomable=true
+%}
+
+*Finite-size scaling of center–edge structural gradient bias. A centrally placed scrambler reduces the bias relative to the baseline over the tested system sizes, but the bias continues to increase with system size, consistent with a finite operator-spreading range.*
 
 This suggests that scalable spatial gradient redistribution may require a scrambler density sufficient to keep each parameter within approximately $O(\xi)$ of a region that promotes operator growth.
 
@@ -169,7 +169,7 @@ In this sense, structural gradient bias is not only an optimization issue but al
 * Proposed **geometry-aware local scrambling** as a minimal intervention for modifying local operator growth and redistributing spatial gradient structure.
 * Introduced quantitative diagnostics based on **center–edge structural bias, gradient entropy, and spatial optimization trajectories**.
 * Characterized a trade-off between rapid local convergence and more spatially balanced parameter participation.
-* Identified finite correlation length and scrambler density as important constraints on scalability.
+* Identified finite correlation length and scrambler density as important constraints on the **scalability of spatial gradient redistribution**.
 
 ---
 
