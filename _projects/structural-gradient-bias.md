@@ -133,7 +133,7 @@ Thus, the relevant question is not simply whether scrambling increases gradient 
    zoomable=true
 %}
 
-*Optimization dynamics at `$N=14$` and `$L=30$`. The baseline achieves the fastest cost reduction, while scrambling layouts exhibit different trade-offs in center–edge structural bias and gradient entropy. Improved spatial balance is geometry dependent and does not necessarily coincide with faster convergence.*
+*Optimization dynamics at N = 14 and L = 30. The baseline achieves the fastest cost reduction, while scrambling layouts exhibit different trade-offs in center–edge structural bias and gradient entropy. Improved spatial balance is geometry dependent and does not necessarily coincide with faster convergence.*
 
 ---
 
