@@ -29,5 +29,4 @@ I am a quantum algorithm researcher at Qunova Computing. My broader research goa
 
 I received my B.Eng. in Informatics and Imaging Systems from the Faculty of Engineering at Chiba University, with support from the Korea-Japan Joint Scholarship Program for Science and Engineering Students. I later earned my M.Eng. in Applied and Cognitive Informatics from the Division of Mathematics and Informatics at Chiba University, conducting research under the supervision of Prof. Yuichiro Fujiwara.
 
-My current research focuses on hybrid quantum-classical methods for the Shortest Vector Problem (SVP) on structured lattice instances.
-
+My research focuses on the trainability and training dynamics of parameterized quantum circuits, studied through light-cone structure, the QNTK, and Hessian analysis. At Qunova Computing, I also work on hybrid quantum-classical methods for the Shortest Vector Problem on structured lattice instances.
