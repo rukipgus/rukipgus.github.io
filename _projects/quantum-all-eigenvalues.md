@@ -1,22 +1,22 @@
 ---
 layout: page
 title: Quantum Algorithm for Finding All Eigenvalues of a Sparse Hermitian Matrix
-description: Developed a full-spectrum quantum estimation method using randomly sampled computational-basis inputs and QPE without prior eigenstate preparation. After my master's degree, I revisited its minimum-gap resolution bottleneck, explored QSVT-based spectral transformations, and investigated finite-precision QPE and hardware constraints through simulations, noise analysis, and hands-on QPU experience.
+description: During my master's degree, developed a full-spectrum quantum estimation method using randomly sampled computational-basis inputs and QPE, and studied sine-windowed QPE to reduce finite-precision leakage. After graduation, revisited the minimum-gap bottleneck, explored QSVT-based approaches, and performed numerical simulations and real-QPU experiments to assess practical constraints.
 importance: 2
 category: research
 related_publications: false
 ---
 
-**M.S. Thesis Research and Subsequent Investigations**  
+**M.S. Thesis Research and Post-Graduation Investigations**  
 [Thesis PDF](/assets/pdf/Seongmuk_khang_master_thesis.pdf)
 
 ## Overview
 
-My master's research addressed a basic question in quantum algorithms: **Can a quantum computer recover all eigenvalues of a large sparse Hermitian matrix without first preparing its eigenstates?**
+My master's research investigated whether a quantum computer could recover **all eigenvalues of a large sparse Hermitian matrix without first preparing its eigenstates**.
 
-I developed a sampling-based approach in which **one computational-basis state is randomly selected and prepared for each quantum phase estimation (QPE) run**. Repeating this process allows different eigenvalues to be collected probabilistically, without explicitly constructing their corresponding eigenvectors.
+During my master's degree, I developed an approach in which **one computational-basis state is randomly selected and prepared for each quantum phase estimation (QPE) run**. Repeated runs probabilistically collect different eigenvalues. I also studied **sine-windowed QPE** to reduce leakage in finite-precision phase estimation, and derived an initial sparse-oracle complexity estimate.
 
-The initial analysis was encouraging under sparse-matrix oracle assumptions. After completing my master's degree, however, I revisited a missing resource cost: **the spectral precision needed to distinguish closely spaced eigenvalues**. I explored quantum singular value transformation (QSVT) as a possible way to reshape the spectrum, studied sine-windowed QPE to improve finite-precision estimation, and gained experience running quantum circuits on real quantum processing units (QPUs). These investigations shifted my focus from idealized query complexity toward quantum algorithms evaluated under realistic precision and hardware constraints.
+**After graduation**, I re-examined the **minimum spectral gap** as a resolution bottleneck, explored **QSVT-based spectral transformations** as a possible way to address it, and assessed QPE performance through **numerical simulations, hardware-noise modeling, and separate experiments on real QPUs**. These subsequent investigations shifted my attention from idealized query complexity toward quantum algorithms that remain useful under realistic precision and hardware constraints.
 
 ---
 
@@ -70,6 +70,28 @@ $$
 Thus, averaging over **classically sampled basis-state preparations** makes each eigenvector index equally likely in the ideal case. Repeating QPE can recover the full spectrum as a sampling problem analogous to the **coupon collector problem**, provided the eigenvalues can be distinguished at the available precision. Degenerate eigenvalues are collected with probabilities proportional to their multiplicities.
 
 The superposition used **inside the phase-estimation register** of QPE is a separate aspect of the algorithm; it does not mean that the system input is a superposition of computational-basis states.
+
+---
+
+## Sine-Windowed QPE During My Master's Degree
+
+During my master's research, I also investigated **sine-windowed quantum phase estimation** as a way to improve the finite-precision behavior of QPE.
+
+Standard QPE uses a uniform superposition in its **phase-estimation register**. In sine-windowed QPE, this register is initialized with sinusoidally weighted amplitudes to reduce spectral leakage away from the true eigenphase. This is a modification of the phase-estimation register, **not** a preparation of a coherent superposition over all computational-basis inputs to the system register.
+
+Compared with the standard rectangular window, the off-target probability decreases more rapidly in the asymptotic regime, from approximately
+
+$$
+O\left(\frac{1}{\delta^2}\right)
+$$
+
+to
+
+$$
+O\left(\frac{1}{\delta^4}\right),
+$$
+
+where $$\delta$$ denotes the phase offset in QPE-bin units. This theoretical improvement was part of my **master's-stage investigation**; the numerical benchmarks and hardware-related tests described below were carried out **after graduation**.
 
 ---
 
@@ -127,29 +149,15 @@ I investigated this direction as a possible response to the bottleneck, **not as
 
 ---
 
-## Further Investigation: Sine-Windowed Quantum Phase Estimation
+## After Graduation: Simulations and Real-QPU Experiments
 
-I also investigated whether the finite-precision behavior of QPE itself could be improved.
+Following my master's degree, I investigated how the sampling-based approach and the sine-windowed QPE kernel behave under finite precision and implementation constraints. This work included **numerical simulations**, **calibration-based hardware-noise modeling**, and **separate experiments using real QPUs**.
 
-Standard QPE uses a uniform superposition in its **phase-estimation register**. With sine-windowed QPE, this register is instead initialized using sinusoidally weighted amplitudes, reducing spectral leakage away from the true eigenphase.
+### Numerical Evaluation of Sine-Windowed QPE
 
-Compared with the standard rectangular window, the off-target leakage has a faster asymptotic decay, improving from approximately
+To avoid evaluating only favorable alignments between an eigenphase and the discrete QPE grid, I swept the phase across a full QPE bin and examined both grid-offset-averaged and worst-case single-shot success probabilities.
 
-$$
-O\!\left(\frac{1}{\delta^2}\right)
-$$
-
-to
-
-$$
-O\!\left(\frac{1}{\delta^4}\right),
-$$
-
-where $$\delta$$ is the offset from the target phase measured in QPE-bin units.
-
-To avoid evaluating only favorable phase-grid alignments, I swept the target phase across an entire QPE bin and examined both average- and worst-case success probabilities.
-
-For the full **12-qubit LiH/STO-3G Hamiltonian**, at $$N_{\mathrm{EVAL}}=13$$, sine-windowed QPE increased the grid-offset-averaged single-shot probability of estimating the ground-state energy within chemical accuracy from **88.4% to 96.6%**. The worst-case probability increased from **79.0% to 94.9%**.
+For the full **12-qubit LiH/STO-3G Hamiltonian**, at $$N_{\mathrm{EVAL}}=13$$, sine-windowed QPE increased the grid-offset-averaged probability of estimating the ground-state energy within chemical accuracy from **88.4% to 96.6%**. The corresponding worst-case probability increased from **79.0% to 94.9%**.
 
 {% include figure.liquid
    loading="eager"
@@ -159,19 +167,15 @@ For the full **12-qubit LiH/STO-3G Hamiltonian**, at $$N_{\mathrm{EVAL}}=13$$, s
 
 *Single-shot chemical-accuracy success for conventional and sine-windowed QPE on the full 12-qubit LiH/STO-3G Hamiltonian. Results are averaged over energy-grid offsets and evaluated at the worst-case offset.*
 
-These results demonstrate an improvement in the **finite-precision QPE kernel**. They do not eliminate the minimum-gap bottleneck for reconstructing an arbitrarily dense spectrum.
+These numerical results support an improvement in the **finite-precision QPE kernel**. They do not imply that sine-windowing removes the minimum-gap bottleneck for reconstructing an arbitrarily dense spectrum.
 
----
+### Robustness Under Simulation and Noise Models
 
-## Real-QPU Experience and Implementation Limits
+I also evaluated the sine-windowed QPE improvement with **Trotterized Hamiltonian evolution** and **calibration-based noise models from IBM Heron processors**.
 
-Beyond idealized analysis, I gained hands-on experience executing quantum circuits on **real QPUs**. This made the practical costs of circuit implementation, sampling, and noise an important part of how I evaluate quantum algorithms.
+In the tested LiH active-space instances, the sine window retained its worst-case advantage when systematic phase bias was approximately **0.14 QPE bin or less**. At biases of approximately **0.4 bin or greater**, the advantage could reverse.
 
-Separately, I examined the robustness of the sine-windowed QPE improvement using **Trotterized Hamiltonian evolution and calibration-based noise models from IBM Heron processors**. These LiH/QPE results were obtained from simulations and noise modeling; they should not be confused with direct experimental measurements of the sine-windowed LiH benchmark on a QPU.
-
-With Trotterized evolution, the sine window retained its worst-case advantage in the tested LiH active-space instances when the systematic phase bias was approximately **0.14 QPE bin or less**. At biases of approximately **0.4 bin or greater**, that advantage could reverse.
-
-Under IBM Heron calibration-based noise models, the idealized sine-window advantage disappeared in the tested circuits. The additional state-preparation overhead, including an extra ancilla and entangling gates, was consistent with the scale of the observed degradation.
+Under IBM Heron calibration-based noise models, the idealized advantage disappeared in the tested circuits. The additional state-preparation overhead, including an extra ancilla and entangling gates, was consistent with the scale of the observed degradation.
 
 | Setting | Observation |
 | --- | --- |
@@ -181,31 +185,40 @@ Under IBM Heron calibration-based noise models, the idealized sine-window advant
 | Trotter phase bias $$\gtrsim 0.4$$ bin | Worst-case advantage can reverse |
 | IBM Heron calibration-based noise model | Idealized advantage disappears in the tested circuits |
 
-Together, the QPU experience and these separate numerical tests reinforced the distinction between an algorithm that works under ideal mathematical assumptions and one that retains its benefits after compilation and implementation costs are included.
+### Hands-On Real-QPU Experience
+
+After graduating, I also conducted experiments with **real quantum processing units (QPUs)**. These experiences made circuit implementation, sampling overhead, device noise, and hardware limitations concrete considerations in my evaluation of quantum algorithms.
+
+The **LiH sine-window results and IBM Heron noise-model results above are from simulations and noise modeling**, not direct measurements of that specific benchmark on a real QPU. I therefore distinguish them from my separate hands-on QPU experiments.
 
 ---
 
 ## What I Learned
 
-This research evolved in stages. My master's thesis proposed a way to recover a full eigenvalue spectrum **without explicitly preparing its eigenstates**, using individually sampled computational-basis inputs. Later, I recognized that the original sampling-based complexity estimate had not adequately captured the **minimum spectral resolution** required to distinguish closely spaced eigenvalues.
+This research developed across two stages. **During my master's degree**, I proposed full-spectrum reconstruction using one randomly sampled computational-basis state per QPE run, studied sine-windowed QPE to mitigate finite-precision leakage, and derived an initial sparse-oracle complexity estimate.
 
-I then explored **QSVT-based spectral transformations** as a possible way to tackle that issue. Further work on **sine-windowed QPE**, implementation errors, and real-QPU experience revealed how improvements at the level of an ideal algorithmic component can be limited by other resources.
+**After graduation**, I revisited the **minimum eigenvalue-gap bottleneck**, explored QSVT-based spectral transformations as a possible response, and carried out numerical simulations and experiments with real QPUs. Subsequent noise and Trotter-error analyses showed that improvements to an ideal QPE component do not necessarily survive implementation overhead.
 
-As a result, I now evaluate potential quantum advantage in terms of the combined costs of **spectral precision, Hamiltonian evolution time, oracle or block-encoding implementation, circuit depth, shot requirements, and hardware noise**, rather than relying on query-complexity expressions alone.
+The combined experience made clear that plausible quantum advantage must be assessed using **spectral precision, Hamiltonian evolution time, oracle or block-encoding implementation, circuit depth, shot requirements, and hardware noise**, rather than query-complexity estimates alone.
 
-This progression has shaped my current interest in designing and assessing quantum algorithms under realistic computational and hardware constraints.
+This perspective shapes my current interest in developing quantum algorithms under realistic computational and hardware constraints.
 
 ---
 
 ## Key Contributions and Follow-Up Investigations
 
-* Developed an approach to full-spectrum estimation without prior eigenstate preparation.
-* Used **one randomly sampled computational-basis state per QPE run**, with repeated independent preparations providing probabilistic access to the spectrum.
-* Analyzed the initial sparse-oracle complexity of Hamiltonian simulation combined with spectrum collection.
-* Identified the **minimum eigenvalue gap and finite spectral resolution** as limitations of the initial end-to-end resource estimate.
-* After my master's degree, explored **QSVT-based polynomial spectral transformations** as a possible approach to the resolution bottleneck, while recognizing their degree-dependent costs.
-* Investigated **sine-windowed QPE**, including phase-grid-offset averages and worst cases, on the full 12-qubit LiH/STO-3G Hamiltonian.
-* Examined **Trotter errors and IBM Heron calibration-based noise models**, alongside separate hands-on experience running circuits on real QPUs, to assess hardware-level constraints.
+**Master's thesis research**
+
+* Developed a full-spectrum estimation approach without prior eigenstate preparation, using **one randomly sampled computational-basis state per QPE run**.
+* Analyzed spectrum collection and Hamiltonian-simulation costs under sparse-matrix oracle assumptions.
+* Investigated **sine-windowed QPE** as a finite-precision enhancement and its suppression of spectral leakage.
+
+**Post-graduation investigations**
+
+* Identified the **minimum eigenvalue gap and finite spectral resolution** as limitations omitted from the initial resource estimate.
+* Explored **QSVT-based polynomial spectral transformations** as a potential approach to this bottleneck, while recognizing degree-dependent implementation costs.
+* Performed numerical **LiH/STO-3G simulations** quantifying sine-windowed QPE's grid-averaged and worst-case success probabilities.
+* Examined **Trotter errors and IBM Heron calibration-based noise models**, and separately conducted experiments with **real QPUs**, to assess practical constraints.
 
 ---
 
