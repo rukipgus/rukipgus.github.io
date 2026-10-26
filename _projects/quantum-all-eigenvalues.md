@@ -8,6 +8,7 @@ related_publications: false
 ---
 
 **M.S. Thesis Research**
+[Thesis PDF](/assets/pdf/Seongmuk_khang_master_thesis.pdf)
 
 ## Overview
 
