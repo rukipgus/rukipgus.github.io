@@ -80,7 +80,7 @@ Under sparse-matrix oracle assumptions, I combined the cost of Hamiltonian simul
 My initial runtime estimate was
 
 $$
-\tilde{O}\!\left(Ns^2(\log N)^2\right),
+\tilde{O}\left(Ns^2(\log N)^2\right),
 $$
 
 where $$N$$ is the matrix dimension and $$s$$ denotes matrix sparsity.
